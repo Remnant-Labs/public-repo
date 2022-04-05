@@ -61,7 +61,6 @@ contract RTestToken is ERC20, Ownable {
      * @dev Turns off bot protection permanently.
      */
     function disableBpPermanent() public onlyOwner {
-        require(!bpPermanentlyDisabled, "Bot protection permanently disabled");
         bp = false;
         bpPermanentlyDisabled = true;
     }
