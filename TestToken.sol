@@ -4,7 +4,7 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract RTestToken is ERC20, Ownable {
+contract RemnantToken is ERC20, Ownable {
     bool public bp; // Bot protection that can be toggled on/off until permanently disabled
     bool public bpPermanentlyDisabled; // Starts false, but when set to true, is permanently true
     uint public bpMaxGas; // Max gwei per trade allowed during bot protection
@@ -13,7 +13,7 @@ contract RTestToken is ERC20, Ownable {
     mapping (address => bool) private bpWhitelisted; // Mapped boolean if router whitelisted
     mapping (address => bool) private bpAddressAlreadyTransacted; // Mapped boolean if traded already
 
-    constructor() ERC20("RTestToken", "RTT") {
+    constructor() ERC20("Remnant", "REMN") {
         _mint(msg.sender, 1000000 * 10 ** decimals()); // Mint 1,000,000 tokens
 
         bpWhitelisted[0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D] = true; // UNISWAP V2 ROUTER MAINNET
