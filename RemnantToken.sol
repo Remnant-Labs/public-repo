@@ -79,13 +79,13 @@ contract RemnantToken is ERC20, Ownable {
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal override {
         if (bp && !bpPermanentlyDisabled && msg.sender != owner()) {
             require(bpWhitelisted[msg.sender] == true); // Only swap router calls are allowed
-            require(bpAddressAlreadyTransacted[msg.sender] == false); // Only 1 trade per address in first XX minutes of swap liquidity
+            require(bpAddressAlreadyTransacted[tx.origin] == false); // Only 1 trade per address in first XX minutes of swap liquidity
             require(tx.gasprice <= bpMaxGas); // Max gwei limit on transaction
             require(bpTradingEnabled); // Trading bool must be set on
             require(amount <= bpMaxTokenTradeValue); // Must trade less than or equal to specified max trade value
+            
+            bpAddressAlreadyTransacted[tx.origin] = true; // User has now transacted so add to mapping (to limit user to 1 trade)
         }
-
-        bpAddressAlreadyTransacted[msg.sender] = true; // User has now transacted so add to mapping (to limit user to 1 trade)
 
         super._beforeTokenTransfer(from, to, amount);
     }
