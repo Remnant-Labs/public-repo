@@ -14,7 +14,7 @@ contract RemnantToken is ERC20, Ownable {
     mapping (address => bool) private bpAddressAlreadyTransacted; // Mapped boolean if traded already
 
     constructor() ERC20("Remnant", "REMN") {
-        _mint(msg.sender, 1000000 * 10 ** decimals()); // Mint 1,000,000 tokens
+        _mint(msg.sender, 10000000000 * 10 ** decimals()); // Mint 10,000,000,000 tokens
 
         bpWhitelisted[0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D] = true; // UNISWAP V2 ROUTER MAINNET
         bpWhitelisted[0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff] = true; // QUICKSWAP ROUTER POLYGON
@@ -22,7 +22,7 @@ contract RemnantToken is ERC20, Ownable {
         bpWhitelisted[0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F] = true; // SUSHISWAP ROUTER MAINNET
 
         bpMaxGas = 501 * 10 ** decimals(); // 501 gwei max on bot protection by default, adjustable
-        bpMaxTokenTradeValue = 10000 * 10 ** decimals(); // 10,000 tokens is the max an address can trade during bot protection
+        bpMaxTokenTradeValue = 10000000 * 10 ** decimals(); // 10,000,000 tokens is the max an address can trade during bot protection
     }
 
     function mint(address to, uint256 amount) public onlyOwner {
