@@ -89,6 +89,5 @@ contract RemnantToken is ERC20, Ownable {
 
         super._beforeTokenTransfer(from, to, amount);
     }
-    
 
 }
