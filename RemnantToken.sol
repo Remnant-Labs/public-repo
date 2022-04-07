@@ -96,15 +96,6 @@ contract RemnantToken is ERC20, Ownable {
     }
 
     /**
-     * @dev Resets transaction count of all addresses (ie. For launching on Uniswap & Quickswap at same time, then Pancakeswap later)
-     */
-    function bpResetAllAddressesTimesTransacted() external onlyOwner {
-        for (uint256 i = 0; i < bpAddressTransactors.length; i++) {
-            bpAddressTimesTransacted[bpAddressTransactors[i]] = 0;
-        }
-    }
-
-    /**
      * @dev Check before token transfer if bot protection is on, to block suspicious transactions
      */
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal override {
@@ -116,7 +107,7 @@ contract RemnantToken is ERC20, Ownable {
             // If user is buying (from swap), check that the buy amount is less than the limit (this will not block other transfers unrelated to swap liquidity)
             if (bpSwapPairRouterPool == from) {
                 require(amount <= bpMaxBuyAmount, "BP: Buy exceeds allowed limit"); // Cannot buy more than allowed limit
-                require(bpAddressTimesTransacted[to] <= bpAllowedNumberOfTx, "BP: Exceeded number of allowed transactions");
+                require(bpAddressTimesTransacted[to] < bpAllowedNumberOfTx, "BP: Exceeded number of allowed transactions");
                 if (!bpTradingEnabled) {
                     bpBlacklisted[to] = true; // Blacklist wallet if it tries to trade (i.e. bot automatically trying to snipe liquidity)
                     revert SwapNotEnabledYet(); // Revert with error message
@@ -126,7 +117,7 @@ contract RemnantToken is ERC20, Ownable {
             // If user is selling (from swap), check that the sell amount is less than the limit. The code is mostly repeated to avoid declaring variable and wasting gas.
             } else if (bpSwapPairRouterPool == to) {
                 require(amount <= bpMaxSellAmount, "BP: Sell exceeds limit"); // Cannot sell more than allowed limit
-                require(bpAddressTimesTransacted[from] <= bpAllowedNumberOfTx, "BP: Exceeded number of allowed transactions");
+                require(bpAddressTimesTransacted[from] < bpAllowedNumberOfTx, "BP: Exceeded number of allowed transactions");
                 if (!bpTradingEnabled) {
                     bpBlacklisted[from] = true; // Blacklist wallet if it tries to trade (i.e. bot automatically trying to snipe liquidity)
                     revert SwapNotEnabledYet(); // Revert with error message
