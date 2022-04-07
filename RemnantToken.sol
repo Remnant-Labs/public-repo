@@ -27,7 +27,7 @@ contract RemnantToken is ERC20, Ownable {
     bool public bpEnabled;                  // Bot protection, on or off
     bool public bpTradingEnabled;           // Enables trading during bot protection period
     bool public bpPermanentlyDisabled;      // Starts false, but when set to true, is permanently true. Let's public see that it is off forever.
-    address bpSwapPairRouterPool;           // ie. Uniswap V2 ETH-REMN Pool (router) for bot protected buy/sell, add after pool established.
+    address public bpSwapPairRouterPool;    // ie. Uniswap V2 ETH-REMN Pool (router) for bot protected buy/sell, add after pool established.
     mapping (address => uint256) public bpAddressTimesTransacted;   // Mapped value counts number of times transacted (2 max per address during bp)
     mapping (address => bool) public bpBlacklisted;                 // If wallet tries to trade after liquidity is added but before owner sets trading on, wallet is blacklisted
 
@@ -91,7 +91,6 @@ contract RemnantToken is ERC20, Ownable {
      * @dev Toggles trading (requires bp not permanently disabled)
      */
     function bpToggleTrading() external onlyOwner {
-        require(!bpPermanentlyDisabled, "Cannot toggle when bot protection is already disabled permanently");
         bpTradingEnabled = !bpTradingEnabled;
     }
 
