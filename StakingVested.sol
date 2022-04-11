@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
-// Just an exact duplicate of RemnantStaking.sol
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract StakingVested is Ownable {
+contract StakingVested is Ownable { // Just an exact duplicate of RemnantStaking.sol
 
     struct Deposit {
         uint256 tokenAmount;
